@@ -1,4 +1,4 @@
-package src;/* -------------------------------------------------------------------------
+/* -------------------------------------------------------------------------
  * This program simulates a single-server FIFO service node using arrival
  * times and service times read from a text file.  The server is assumed
  * to be idle when the first job arrives.  All jobs are processed completely
