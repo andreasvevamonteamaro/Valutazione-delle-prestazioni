@@ -1,4 +1,4 @@
-/* -------------------------------------------------------------------------
+package src;/* -------------------------------------------------------------------------
  * This program simulates a single-server FIFO service node using arrival
  * times and service times read from a text file.  The server is assumed
  * to be idle when the first job arrives.  All jobs are processed completely
@@ -20,7 +20,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 
-class Ssq2Sum {                                 /* sum of ...           */
+class Ssq1Sum {                                 /* sum of ...           */
     double delay;                                 /*   delay times        */
     double wait;                                  /*   wait times         */
     double service;                               /*   service times      */
@@ -40,8 +40,8 @@ class Ssq2Sum {                                 /* sum of ...           */
     }
 }
 
-class Ssq2 {
-    static String FILENAME = "/Users/andreasvevamonteamaro/Downloads/ssq2.dat";          /* input data file */
+class Ssq1 {
+    static String FILENAME = "/Users/andreasvevamonteamaro/Downloads/ssq1.dat";          /* input data file */
     static double START = 0.0;
 
     public static void main(String[] args) throws IOException {
@@ -60,10 +60,7 @@ class Ssq2 {
             String line = null;
             StringTokenizer st = null;
             long   index     = 0;                     /* job index            */
-            //double arrival   = START;                 /* arrival time         */
-            double arrival=0.0;
-            double intarrival =START;
-            double oldarrival=0.0;
+            double arrival   = START;                 /* arrival time         */
             double delay;                             /* delay in queue       */
             double service;                           /* service time         */
             double wait;                              /* delay + service      */
@@ -84,18 +81,14 @@ class Ssq2 {
             double time=400.0;                        /* time                 */
             int jobInServerNode=0;                    /*number of jobs in the service node at a specified time */
 
-            Ssq2Sum sum = new Ssq2Sum();
+            Ssq1Sum sum = new Ssq1Sum();
             sum.initSumParas();
 
             while ( (line = in.readLine()) != null ) {
                 index++;
-
                 st = new StringTokenizer(line);
 
-                intarrival = Double.parseDouble(st.nextToken());
-
-                arrival= intarrival + oldarrival;
-
+                arrival = Double.parseDouble(st.nextToken());
                 if (arrival < departure)
                     delay    = departure - arrival;       /* delay in queue    */
                 else
@@ -117,7 +110,7 @@ class Ssq2 {
                 if(arrival<time & time<departure)
                     jobInServerNode++;
 
-            oldarrival=arrival;
+
             }
             sum.interarrival = arrival - START;
 
@@ -131,7 +124,7 @@ class Ssq2 {
             avg_n_in_service = sum.service/total_completation_time;
 
             DecimalFormat f = new DecimalFormat("###0.00");
-            System.out.println(" Modified version");
+
             System.out.println("\nfor " + index + " jobs");
             System.out.println("   average interarrival time =  " + f.format(sum.interarrival / index));
             System.out.println("   average service time .... =  " + f.format(sum.service / index));
@@ -152,8 +145,14 @@ class Ssq2 {
             System.out.println("   the proportion of customer that were delayed ="+ f.format((double) numOfDelay/index));
 
 
+
+           // System.out.println("   last arrival ...............=  " + f.format(arrival));
+            // System.out.println("   max delay ................=  " + f.format(maxDelay));
+           // System.out.println("   last service time ..........=  " + f.format(lastservice));
+           // System.out.println("   total completation time ....=  " + f.format(arrival+sum.delay+lastservice));
+
         } catch (EOFException eofe) {
-            System.out.println("Ssq2:" + eofe);
+            System.out.println("Ssq1:" + eofe);
         }
         // if the file opened okay, make sure we close it
         fis.close();
