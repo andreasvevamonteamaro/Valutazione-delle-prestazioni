@@ -66,9 +66,9 @@ class Ssq1 {
             double wait;                              /* delay + service      */
             double departure = START;                 /* departure time       */
 
-            double throughput;
-            double input_rate;
-            double service_rate;
+            double throughput;                        /* throughput           */
+            double input_rate;                        /* input rate           */
+            double service_rate;                      /* service rate         */
             double traffic_intensity;
             double server_utilization;
             double avg_n_in_service;
@@ -94,9 +94,9 @@ class Ssq1 {
                 else
                     delay    = 0.0;                       /* no delay          */
 
-                if(maxDelay<delay)
+                if(maxDelay<delay)            /* if the current delay is bigger than the previous maximum then it becomes the new max*/
                     maxDelay=delay;
-                if(delay!=0.0)
+                if(delay!=0.0)                /* if there is a delay add 1 to the counter*/
                     numOfDelay++;
 
                 service = Double.parseDouble(st.nextToken());
@@ -108,6 +108,7 @@ class Ssq1 {
                 lastservice = service;
 
                 if(arrival<time & time<departure)
+                    /* if  the period of time of service is included in the time then add 1 for every job served in that period of time*/
                     jobInServerNode++;
 
 
@@ -115,13 +116,13 @@ class Ssq1 {
             sum.interarrival = arrival - START;
 
 
-            input_rate = 1 / (sum.interarrival/index);
-            service_rate= 1 / (sum.service/index);
-            traffic_intensity = input_rate/ service_rate;
-            total_completation_time = arrival+sum.delay+lastservice;
-            throughput= index/ total_completation_time ;
-            server_utilization = sum.service/ total_completation_time;
-            avg_n_in_service = sum.service/total_completation_time;
+            input_rate = 1 / (sum.interarrival/index);                  /* input rate = 1 / average interrarival time */
+            service_rate= 1 / (sum.service/index);                      /* service rate = 1 / average service time    */
+            traffic_intensity = input_rate/ service_rate;               /* traffic intensity =  (1/ average interrarival time) / (1/ average service time)*/
+            total_completation_time = arrival+sum.delay+lastservice;    /*cn -> not sure*/
+            throughput= index/ total_completation_time ;                /*throughput = n/T*/
+            server_utilization = sum.service/ total_completation_time;  /* server utilization = B /cn */
+            avg_n_in_service = sum.service/total_completation_time;     /* average number in service = B/cn */
 
             DecimalFormat f = new DecimalFormat("###0.00");
 
@@ -144,12 +145,7 @@ class Ssq1 {
             System.out.println("   number of delay ............ =  " + (numOfDelay));
             System.out.println("   the proportion of customer that were delayed ="+ f.format((double) numOfDelay/index));
 
-
-
-           // System.out.println("   last arrival ...............=  " + f.format(arrival));
-            // System.out.println("   max delay ................=  " + f.format(maxDelay));
-           // System.out.println("   last service time ..........=  " + f.format(lastservice));
-           // System.out.println("   total completation time ....=  " + f.format(arrival+sum.delay+lastservice));
+            
 
         } catch (EOFException eofe) {
             System.out.println("Ssq1:" + eofe);
