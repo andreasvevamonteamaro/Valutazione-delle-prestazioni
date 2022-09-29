@@ -82,7 +82,7 @@ class Ssq2 {
             int numOfDelay=0;                         /* number of delay job  */
             double maxDelay=0;                        /* max delay time       */
             double time=400.0;                        /* time                 */
-            int jobInServerNode=0;                    /*number of jobs in the service node at a specified time */
+            int jobInServiceFacility=0;                    /*number of jobs in the service node at a specified time */
 
             Ssq2Sum sum = new Ssq2Sum();
             sum.initSumParas();
@@ -94,7 +94,7 @@ class Ssq2 {
 
                 intarrival = Double.parseDouble(st.nextToken());
 
-                arrival= intarrival + oldarrival;
+                arrival= intarrival + oldarrival; /* Ti= ai-a(i-1) so ai= Ti + a(i-1) */
 
                 if (arrival < departure)
                     delay    = departure - arrival;       /* delay in queue    */
@@ -115,9 +115,9 @@ class Ssq2 {
                 lastservice = service;
 
                 if(arrival<time & time<departure)
-                    jobInServerNode++;
+                    jobInServiceFacility++;
 
-            oldarrival=arrival;
+            oldarrival=arrival;     /* a(i-1)*/
             }
             sum.interarrival = arrival - START;
 
@@ -146,8 +146,8 @@ class Ssq2 {
             System.out.println("   server utilization ...... =  " + f.format(server_utilization));
             System.out.println("   average number in service =  " + f.format(avg_n_in_service));
             System.out.println("   max delay................ =  " + f.format(maxDelay));
-            System.out.print("   the number of jobs in the service node at time " +time );
-            System.out.println(" is ="+  jobInServerNode);
+            System.out.print("   the number of jobs in the service facility at time " +time );
+            System.out.println(" is ="+  jobInServiceFacility);
             System.out.println("   number of delay ............ =  " + (numOfDelay));
             System.out.println("   the proportion of customer that were delayed ="+ f.format((double) numOfDelay/index));
 

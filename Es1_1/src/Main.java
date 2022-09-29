@@ -79,7 +79,7 @@ class Ssq1 {
             int numOfDelay=0;                         /* number of delay job  */
             double maxDelay=0;                        /* max delay time       */
             double time=400.0;                        /* time                 */
-            int jobInServerNode=0;                    /*number of jobs in the service node at a specified time */
+            int jobInServiceFacility=0;                    /*number of jobs in the service node at a specified time */
 
             Ssq1Sum sum = new Ssq1Sum();
             sum.initSumParas();
@@ -109,7 +109,7 @@ class Ssq1 {
 
                 if(arrival<time & time<departure)
                     /* if  the period of time of service is included in the time then add 1 for every job served in that period of time*/
-                    jobInServerNode++;
+                    jobInServiceFacility++;
 
 
             }
@@ -119,8 +119,8 @@ class Ssq1 {
             input_rate = 1 / (sum.interarrival/index);                  /* input rate = 1 / average interrarival time */
             service_rate= 1 / (sum.service/index);                      /* service rate = 1 / average service time    */
             traffic_intensity = input_rate/ service_rate;               /* traffic intensity =  (1/ average interrarival time) / (1/ average service time)*/
-            total_completation_time = arrival+sum.delay+lastservice;    /*cn -> not sure*/
-            throughput= index/ total_completation_time ;                /*throughput = n/T*/
+            total_completation_time = arrival+sum.delay+lastservice;    /*cn = an+dn+sn*/
+            throughput= index/ total_completation_time ;                /*throughput = n/T */
             server_utilization = sum.service/ total_completation_time;  /* server utilization = B /cn */
             avg_n_in_service = sum.service/total_completation_time;     /* average number in service = B/cn */
 
@@ -141,7 +141,7 @@ class Ssq1 {
             System.out.println("   average number in service =  " + f.format(avg_n_in_service));
             System.out.println("   max delay................ =  " + f.format(maxDelay));
             System.out.print("   the number of jobs in the service node at time " +time );
-            System.out.println(" is ="+  jobInServerNode);
+            System.out.println(" is ="+  jobInServiceFacility);
             System.out.println("   number of delay ............ =  " + (numOfDelay));
             System.out.println("   the proportion of customer that were delayed ="+ f.format((double) numOfDelay/index));
 
